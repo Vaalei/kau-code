@@ -1,9 +1,9 @@
 funk: main.o funktioner.o
-    gcc main.o funktioner.o -o funk
+	gcc main.o funktioner.o -o funk
 main.o: main.c
-    gcc -c main.c
+	gcc -c main.c
 funktioner.o: funktioner.c funktioner.h
-    gcc -c funktioner.c
+	gcc -c funktioner.c
 clean:
-    rm -f *.o
-    rm -f funk
+	rm -f *.o
+	rm -f funk
