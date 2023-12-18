@@ -1,10 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include "funktioner.h"
 
+#define ADD_VEHICLCE 1
+#define REMOVE_VEHICLE 2
+#define SORT 3
+#define SHOW_VEHICLE 4
+#define SHOW_REGISTRY 5
+#define QUIT 0
 
 int main(){
     char input[MAX_INPUT];
+    char *eptr;
     int choice;
     int i;
 
@@ -22,28 +30,40 @@ int main(){
 
 
         fgets(input, MAX_INPUT, stdin);
-        choice = atoi(input);
+        choice = strtol(input, &eptr, MAX_INPUT);
+        if (choice == 0)
+        {
+            if (errno == EINVAL)
+            {
+                choice = -1;
+                errno = 0;
+            }
+        }
 
         switch (choice)
         {
-        case 1:
+        case ADD_VEHICLCE:
             addVehicle();
             break;
-        case 2:
+        case REMOVE_VEHICLE:
             removeVehicle();
             break;
-        case 3:
+        case SORT:
             sort();
             break;
-        case 4:
+        case SHOW_VEHICLE:
             showOneVehicle();
             break;
-        case 5:
+        case SHOW_REGISTRY:
             showAllVehicles();
             break;
-        case 0:
+        case QUIT:
             puts("Exitted program");
             return 0;
+        default:
+            puts("That option does not exist");
+            break;
+
         }
 
     }
