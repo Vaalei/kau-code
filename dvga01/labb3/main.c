@@ -30,15 +30,8 @@ int main(){
 
 
         fgets(input, MAX_INPUT, stdin);
-        choice = strtol(input, &eptr, MAX_INPUT);
-        if (choice == 0)
-        {
-            if (errno == EINVAL)
-            {
-                choice = -1;
-                errno = 0;
-            }
-        }
+        choice = strtol(input, &eptr, 0);
+        if (input == eptr) choice = -1; // Check if input is jibberish
 
         switch (choice)
         {
