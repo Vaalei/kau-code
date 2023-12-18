@@ -1,16 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "funktioner.h"
-
-
-#define MAX_INPUT 80
 
 
 int main(){
     char input[MAX_INPUT];
     int choice;
     int i;
+
+    struct Vehicle_t vehicles[MAX_VEHICLES];
 
     while(1)
     {
@@ -29,17 +27,20 @@ int main(){
         switch (choice)
         {
         case 1:
+            addVehicle();
             break;
         case 2:
+            removeVehicle();
             break;
         case 3:
+            sort();
             break;
-
         case 4:
+            showOneVehicle();
             break;
         case 5:
+            showAllVehicles();
             break;
-        
         case 0:
             puts("Exitted program");
             return 0;
