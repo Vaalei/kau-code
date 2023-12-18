@@ -132,7 +132,7 @@ void addVehicle()
     }
     struct Vehicle_t vehicle;
     createVehicle(&vehicle);
-    if (vehicle.person.age = 0){
+    if (vehicle.person.age == 0){
         puts("Error: Invalid age, age must be a positive integer");
         return;
     }
