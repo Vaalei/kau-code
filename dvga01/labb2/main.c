@@ -103,6 +103,7 @@ int main(){
             memcpy(numseq, genNumSeq(NUM_SEQUENCE_LENGTH), sizeof(numseq));
             printArr(numseq);
             generated = true;
+            sorted = false;
 
             break;
         case 2:
