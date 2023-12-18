@@ -67,7 +67,7 @@ void showAllVehicles(void)
     int i;
     for (i = 0; i <length; i++)
     {
-        printf("%d.\tType: %s\tBrand: %s\tReg Num: %s\tOwners name: %s\tOwners age: %d\n", i+1, vehicles[i].type, vehicles[i].brand, vehicles[i].register_number, vehicles[i].person.name, vehicles[i].person.age);
+        printf("%d.\tType: %s\tBrand: %s\tReg Num: %s\n", i+1, vehicles[i].type, vehicles[i].brand, vehicles[i].register_number);
     }
 }
 
