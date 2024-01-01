@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include "funktioner.h"
+#include "file.h"
 
 #define ADD_VEHICLCE 1
 #define REMOVE_VEHICLE 2

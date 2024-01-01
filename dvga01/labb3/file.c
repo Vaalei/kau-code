@@ -1,4 +1,4 @@
-#include "funktioner.h"
+#include "file.h"
 
 const char* readStr(char message[])
 {
