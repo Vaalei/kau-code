@@ -1,6 +1,6 @@
 a.out: main.o file.o
 	gcc main.o file.o -o a.out
-main.o: main.c main.h
+main.o: main.c
 	gcc -c main.c
 file.o: file.c file.h
 	gcc -c file.c
