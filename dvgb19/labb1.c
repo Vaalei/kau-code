@@ -16,49 +16,48 @@ int n;
 int BufferSize;
 int TimeInterval;
 sem_t buffer;
+sem_t zero;
 
 
-void *producer(void *thread_id){
+void *producer(){
+    char str[MAX_LENGTH];
+	int fd;
+
+    sprintf(str, "test\n");
+    fd = open(FIFO_NAME, O_WRONLY|O_NONBLOCK); /* open FIFO for writing */
+    printf("producer is created\n");
+    while(1)
+    {
+        sem_wait(&buffer);
+        pthread_mutex_lock(&lock);
+        write(fd, str, strlen(str));
+        pthread_mutex_unlock(&lock);
+        printf("producer wrote %s", str);
+        sem_post(&zero);
+        sleep(TimeInterval);
+    }
+    close(fd);
+}
+
+void* consumer(void *thread_id){
     char str[MAX_LENGTH];
 	int fd;
     long tid = (long)thread_id;
-
-    sprintf(str, "Item #%ld\n", tid);
-    printf("thread #%ld is created\n", tid);
-    while(1)
-    {
-        pthread_mutex_lock(&lock);
-        fd = open(FIFO_NAME, O_WRONLY); /* open FIFO for writing */
-
-        write(fd, str, strlen(str));
-        close(fd);
-        sem_wait(&buffer);
-        pthread_mutex_unlock(&lock);
-        printf("Thread #%ld wrote %s", tid, str);
-        sleep(TimeInterval);
-    }
-}
-
-void* consumer(){
-    char str[MAX_LENGTH];
-	int fd;
-    sleep(1);
+    fd = open(FIFO_NAME, O_RDONLY); /* open FIFO for reading */
+    printf("consumer #%ld is created\n", tid);
     while (1)
     {
+        sem_wait(&zero);
         pthread_mutex_lock(&lock);
-        
-        fd = open(FIFO_NAME, O_RDONLY); /* open FIFO for reading */
-
         read(fd, str, MAX_LENGTH);
-        close(fd);
         sem_post(&buffer);
         pthread_mutex_unlock(&lock);
-        printf("Consumer consumed %s", str);
+        printf("Consumer #%ld consumed %s", tid, str);
     }
+    close(fd);
 }
 
 int main(){
-    pthread_t tid2[n];
     pthread_t producerid;
     mkfifo(FIFO_NAME, 0666); /* make FIFO, if not already existed*/
     if (pthread_mutex_init(&lock, NULL) != 0)
@@ -69,17 +68,24 @@ int main(){
     scanf("%d", &BufferSize);
     printf("\nTimeInterval: ");
     scanf("%d", &TimeInterval);
+    pthread_t tid[n];
     
     sem_init(&buffer, 0, BufferSize);
+    sem_init(&zero, 0, 0);
     pthread_mutex_init(&lock, NULL);
     
     for (int i = 0; i < n; i++) {
-        pthread_create(&tid2[i], NULL, producer, (void *)i);
+        pthread_create(&tid[i], NULL, consumer, (void *)i);
     }
-    pthread_create(&producerid, NULL, consumer, NULL);
+    pthread_create(&producerid, NULL, producer, NULL);
 
 
-    while (1) ;
-    pthread_mutex_destroy(&lock); 
-    
+    for (int i = 0; i < n; i++) {
+        pthread_join(&tid[i], NULL);
+    }
+    pthread_join(&producerid, NULL);
+
+
+    pthread_mutex_destroy(&lock);
+    sem_destroy(&buffer);
 }
