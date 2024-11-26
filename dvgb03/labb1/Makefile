@@ -8,7 +8,7 @@ SRC=$(filter-out $(wildcard *_test.c), $(wildcard *.c))
 OBJ=$(SRC:.c=.o)
 
 CFLAGS_TEST=$(CFLAGS) 
-LFLAGS_TEST=$(LFLAGS) -lm -lpthread -lrt
+LFLAGS_TEST=$(LFLAGS) -lm -lpthread -lrt -lsubunit
 SRC_TEST=$(filter-out main.c, $(wildcard *.c))
 OBJ_TEST=$(SRC_TEST:.c=.o)
 
