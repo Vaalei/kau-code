@@ -4,7 +4,12 @@
 // Private
 //
 
-// Swaps two pointervalues
+
+//
+// Public
+//
+
+// Swaps two pointers
 void swap(int *p1, int *p2)
 {
 	int t;
@@ -13,10 +18,6 @@ void swap(int *p1, int *p2)
 	*p2 = t;
 }
 
-
-//
-// Public
-//
 void bubble_sort(int *a, int n)
 {
 	// TODO: bubble sort

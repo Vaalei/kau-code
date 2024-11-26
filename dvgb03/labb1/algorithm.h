@@ -18,4 +18,6 @@ bool linear_search(const int *arr, int n, int v);
 // binary_search checks whether a value v is in a sorted arrray arr of length n
 bool binary_search(const int *arr, int n, int v);
 
+// swaps two pointers
+void swap(int *p1, int *p2);
 #endif
