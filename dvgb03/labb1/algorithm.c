@@ -29,9 +29,15 @@ void insertion_sort(int *a, int n)
 
 void quick_sort(int *a, int n)
 {
+	if (n <= 1)
+	{
+		return;
+	}
+
 	int pivot = a[n-1];
 	int pivot_offset = 0;
-	for (int i; i > pivot; i++)
+
+	for (int i = 0; i < n -1; i++)
 	{
 		if (a[i] < pivot)
 		{
@@ -41,10 +47,9 @@ void quick_sort(int *a, int n)
 	}
 
 	swap(&a[pivot_offset], &a[n-1]);
-	pivot_offset++;	// Pivot offset + 1 -> Storleken av Arrayen innan pivot 
 
 	quick_sort(a, pivot_offset);
-	quick_sort(&a[pivot_offset], n - pivot_offset);
+	quick_sort(a + pivot_offset + 1, n - pivot_offset - 1);
 }
 
 bool linear_search(const int *a, int n, int v)
