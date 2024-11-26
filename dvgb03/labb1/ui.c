@@ -99,63 +99,76 @@ void ui_run()
 			// Bubble sort best case
 			case 'c':
 				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
-				printf("todo> implemenet BE + present results in FE\n");
 				break;
 
 			// Bubble sort worst case
 			case 'd':
+				benchmark(bubble_sort_t, worst_t, result, RESULT_ROWS);
 				break;
 				
 			// Bubble sort average case\n
 			case 'e':
+				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Insertion sort best case
 			case 'f':
+				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Insertion sort worst case
 			case 'g':
+				benchmark(insertion_sort_t, worst_t, result, RESULT_ROWS);
 				break;
 
 			// Insertion sort average case\n
 			case 'h':
+				benchmark(insertion_sort_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Quick sort best case
 			case 'i':
+				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Quick sort worst case
 			case 'j':
+				benchmark(quick_sort_t, worst_t, result, RESULT_ROWS);
 				break;
 
 			// Quick sort average case\n
 			case 'k':
+				benchmark(quick_sort_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Linear search best case
 			case 'l':
+				benchmark(linear_search_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Linear search worst case
 			case 'm':
+				benchmark(linear_search_t, worst_t, result, RESULT_ROWS);
 				break;
 
 			// Linear search average case\n
 			case 'n':
+				benchmark(linear_search_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Binary search best case
 			case 'o':
+				benchmark(binary_search_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Binary search worst case
 			case 'p':
+				benchmark(binary_search_t, worst_t, result, RESULT_ROWS);
 				break;
 
 			// Binary search average cas
 			case 'q':
+				benchmark(binary_search_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Invalid input
