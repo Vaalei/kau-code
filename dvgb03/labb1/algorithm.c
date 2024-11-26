@@ -55,7 +55,14 @@ void quick_sort(int *a, int n)
 
 bool linear_search(const int *a, int n, int v)
 {
-	return false; // TODO: linear search
+	for (int i = 0; i < n; i++)
+	{
+		if (a[i] == v)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool binary_search(const int *a, int n, int v)
