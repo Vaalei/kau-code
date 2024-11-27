@@ -1,13 +1,110 @@
 #include "ui.h"
 #include "io.h"
 #include "analyze.h"
-
 #include <stdbool.h>
 #include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_ARRAY_LENGTH 10
+#define ENUM_COUNT 5
 
 //
 // Private
 //
+
+typedef enum {
+	n_o,
+	logn_o,
+	nlogn_o,
+	n2_o,
+	n3_o
+} big_o_name;
+
+
+typedef struct {
+	int size;
+	big_o_name type;
+	char* name;
+	double mean_diff;
+} big_o;
+
+void changename(char* name, big_o_name big_o)
+{
+	switch (big_o)
+	{
+	case n_o:
+		strcpy(name, "O(N)");
+		break;
+	case logn_o:
+		strcpy(name, "O(logN)");
+		break;
+	case nlogn_o:
+		strcpy(name, "O(NlogN)");
+		break;
+	case n2_o:
+		strcpy(name, "O(N^2)");
+		break;
+	case n3_o:
+		strcpy(name, "O(N^3)");
+		break;
+	}
+}
+
+double diff_from_avg(double input, double avg)
+{
+	return fabs(avg-input);
+}
+
+void swap_category(big_o *p1, big_o *p2)
+{
+	big_o t = *p1;
+	*p1 = *p2;
+	*p2 = t;
+}
+
+// Sorting categories with bubble sort
+void sort_category(big_o *a, int n)
+{
+	printf("hello world");
+	for (int i = 0; i < n-1; i++)
+	{
+		for (int j = 0; j< n-i-1; j++)
+		{
+			if ( fabs(a[j].mean_diff) < fabs(a[j+1].mean_diff)) {
+				swap_category(&a[j], &a[j+1]);
+			}
+		}
+	}
+}
+
+double calculate(double input, int size, big_o_name type)
+{
+	double x;
+	switch (type)
+		{
+		case n_o:
+			x = input/size;
+			break;
+		case logn_o:
+			x = input/log2(size);
+			break;
+		case nlogn_o:
+			x = input/(size*log2(size));
+			break;
+		case n2_o:
+			x = input/pow(size,2);
+			break;
+		case n3_o:
+			x = input/pow(size,3);
+			break;
+		default:
+			break;
+		}
+	return x;
+}
+
 static void ui_invalid_input()
 {
 	printf("info> bad input\n");
@@ -77,17 +174,29 @@ void ui_run()
 {
 	bool running, show_menu;
 	result_t result[RESULT_ROWS];
+	big_o category[RESULT_ROWS];
 	char choice;
+	double sum;
+	double temp;
+	double mean;
+	double calculated_result[RESULT_ROWS];
 
 	show_menu = true;
 	running = true;
+
+	for (int i = 0; i < RESULT_ROWS; i++)
+	{
+		category[i].name = malloc(10 * sizeof(char));
+	}
+	
+
 	while (running) {
 		if (show_menu) {
 			show_menu = false;
 			ui_menu();
 		}
 		choice = ui_get_choice();
-		ui_star('*', MENU_WIDTH);
+		ui_line('*', MENU_WIDTH);
 		switch (choice) {
 			// House keeping
 			case 'a':
@@ -196,9 +305,73 @@ void ui_run()
 				break;
 		}
 
-		ui_squiggly('~', MENU_WIDTH);
+		ui_line('~', MENU_WIDTH);
 		printf("\n");
 
+
+		// calculate time / bigo
+		// 
+		//
+		//
+
+		// I is the enum for the different big o notations (big_o)
+		for (int i = 0; i < ENUM_COUNT; i++)
+		{
+			if (false)
+				printf("%d",category[i].size);	
+				
+			
+			category[i].type = i;
+			sum = 0;
+			
+			for (int j = 0; j < RESULT_ROWS; j++)
+			{
+				temp = calculate(result[j].time, result[j].size, i);
+				sum += temp;
+				calculated_result[j] = temp;
+				//printf("%e\n",temp);
+			}
+			mean = sum/RESULT_ROWS;
+			//printf("mean: %e\n", mean);
+
+			sum = 0;
+			for (int j = 0; j < RESULT_ROWS; j++)
+			{
+				sum += diff_from_avg(calculated_result[j], mean);
+				
+			}
+			category[i].mean_diff = sum/RESULT_ROWS;
+			
+			changename(category[i].name, i);
+
+		}
+
+		// Sort array of big_o's, lowest mean_diff comes first 
+		sort_category(category, ENUM_COUNT);
+
+		printf(
+			"Size\tTime\t\t%s\t\t%s\t\t%s\n", 
+			category[0].name,
+			category[1].name,
+			category[2].name
+		);
+		for (int j = 0; j < RESULT_ROWS; j++)
+		{
+			printf(
+				"%d\t%e\t%e\t%e\t%e\n",
+				result[j].size, 
+				result[j].time, 
+				calculate(result[j].time, result[j].size, category[0].type),
+				calculate(result[j].time, result[j].size, category[1].type),
+				calculate(result[j].time, result[j].size, category[2].type)
+			);
+		}
+		printf(
+			"mean diff\t\t%e\t%e\t%e\n", 
+			category[0].mean_diff,
+			category[1].mean_diff,
+			category[2].mean_diff
+		);
 	}
 	ui_exit();
 }
