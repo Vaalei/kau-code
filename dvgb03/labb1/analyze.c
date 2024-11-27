@@ -90,8 +90,8 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
                         break;
 
                     case linear_search_t:
-                        v = array[0];
                         fill_sorted_asc(array, size);
+                        v = array[0];
                         break;
             
                     default:
@@ -109,7 +109,7 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
                         break;
                     
                     case linear_search_t:
-                        v = array[n-1];
+                        v = array[size-1];
                         fill_sorted_asc(array, size);
                         break;
                     
@@ -124,7 +124,7 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
                 {
                     case binary_search_t:
                     case linear_search_t:
-                        v = rand() % n;
+                        v = rand() % size;
                         fill_sorted_asc(array, size);
                         break;
                     
@@ -160,7 +160,7 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
                     break;
             }
             clock_gettime(CLOCK_MONOTONIC, &end);
-            time_sum += end.tv_nsec - start.tv_nsec;
+            time_sum += end.tv_nsec- start.tv_nsec  + (end.tv_sec - start.tv_sec) * 1e9;
         }
         buf[i].time = time_sum/AVERAGE_TEST_AMOUNT;
         buf[i].size = size;
