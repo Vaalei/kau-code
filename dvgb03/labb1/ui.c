@@ -35,19 +35,19 @@ void changename(char* name, big_o_name big_o)
 	switch (big_o)
 	{
 	case n_o:
-		strcpy(name, "O(N)");
+		strcpy(name, "O(N)\t");
 		break;
 	case logn_o:
-		strcpy(name, "O(logN)");
+		strcpy(name, "O(logN)\t");
 		break;
 	case nlogn_o:
 		strcpy(name, "O(NlogN)");
 		break;
 	case n2_o:
-		strcpy(name, "O(N^2)");
+		strcpy(name, "O(N^2)\t");
 		break;
 	case n3_o:
-		strcpy(name, "O(N^3)");
+		strcpy(name, "O(N^3)\t");
 		break;
 	}
 }
@@ -67,12 +67,14 @@ void swap_category(big_o *p1, big_o *p2)
 // Sorting categories with bubble sort
 void sort_category(big_o *a, int n)
 {
-	printf("hello world");
+	int exp_a, exp_b;
 	for (int i = 0; i < n-1; i++)
 	{
 		for (int j = 0; j< n-i-1; j++)
 		{
-			if ( fabs(a[j].mean_diff) < fabs(a[j+1].mean_diff)) {
+			frexp(a[j].mean_diff, &exp_a);
+			frexp(a[j+1].mean_diff, &exp_b);
+			if ( fabs(exp_a) > fabs(exp_b)) {
 				swap_category(&a[j], &a[j+1]);
 			}
 		}
@@ -306,7 +308,6 @@ void ui_run()
 		}
 
 		ui_line('~', MENU_WIDTH);
-		printf("\n");
 
 
 		// calculate time / bigo
@@ -329,28 +330,23 @@ void ui_run()
 				temp = calculate(result[j].time, result[j].size, i);
 				sum += temp;
 				calculated_result[j] = temp;
-				//printf("%e\n",temp);
 			}
 			mean = sum/RESULT_ROWS;
-			//printf("mean: %e\n", mean);
 
 			sum = 0;
 			for (int j = 0; j < RESULT_ROWS; j++)
 			{
 				sum += diff_from_avg(calculated_result[j], mean);
-				
 			}
 			category[i].mean_diff = sum/RESULT_ROWS;
-			
 			changename(category[i].name, i);
-
 		}
 
 		// Sort array of big_o's, lowest mean_diff comes first 
 		sort_category(category, ENUM_COUNT);
 
 		printf(
-			"Size\tTime\t\t%s\t\t%s\t\t%s\n", 
+			"Size\tTime\t\t%s\t%s\t%s\n",
 			category[0].name,
 			category[1].name,
 			category[2].name
@@ -366,12 +362,7 @@ void ui_run()
 				calculate(result[j].time, result[j].size, category[2].type)
 			);
 		}
-		printf(
-			"mean diff\t\t%e\t%e\t%e\n", 
-			category[0].mean_diff,
-			category[1].mean_diff,
-			category[2].mean_diff
-		);
+		ui_line('~', MENU_WIDTH);
 	}
 	ui_exit();
 }
