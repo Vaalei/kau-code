@@ -87,10 +87,12 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
                     case binary_search_t:
                         v = array[mid];
                         fill_sorted_asc(array, size);
+                        break;
 
                     case linear_search_t:
                         v = array[0];
                         fill_sorted_asc(array, size);
+                        break;
             
                     default:
                         fill_sorted_asc(array, size);
