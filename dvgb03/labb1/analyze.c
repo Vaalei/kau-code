@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdio.h>
 
+#define AVERAGE_TEST_AMOUNT 5
 //
 // Private
 //
@@ -24,7 +25,7 @@ void fill_sorted_asc(int *a, int n)
 {
     for (int i = 0; i < n; i++)
     {
-        *(a+i) = i;
+        a[i] = i;
     }
 }
 // Fill array with sorted values in descending order
@@ -63,11 +64,12 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
 {
     srand(time(NULL));
     int v;
-    time_t start;
-    time_t end;
+    struct timespec start;
+    struct timespec end;
+
     for (int i = 0; i < n; i++)
     {
-
+        double time_sum = 0;
         int size = pow(2,(9+i));
         int mid = size/2;
         int *array = malloc(size*sizeof(int));
@@ -113,6 +115,7 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
                         fill_sorted_desc(array, size);
                         break;
                 }
+                break;
             
             case average_t:
                 switch (a)
@@ -127,34 +130,37 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
                         fill_random(array, size);
                         break;
                 }
+                break;
 
-                
         }
-        // Temp
-        //printArray(array, size);
-        time(&start);
-        switch (a)
+
+        for (int i = 0; i < AVERAGE_TEST_AMOUNT; i++)
         {
-            case bubble_sort_t:
-                bubble_sort(array, size);
-                break;
-            case insertion_sort_t:
-                insertion_sort(array, size);
-                break;
-            case quick_sort_t:
-                quick_sort(array, size);
-                break;
-            case linear_search_t:
-                linear_search(array, size, v);
-                break;
-            case binary_search_t:
-                binary_search(array, size, v);
-                break;
-            default:
-                break;
+            clock_gettime(CLOCK_MONOTONIC, &start);
+            switch (a)
+            {
+                case bubble_sort_t:
+                    bubble_sort(array, size);
+                    break;
+                case insertion_sort_t:
+                    insertion_sort(array, size);
+                    break;
+                case quick_sort_t:
+                    quick_sort(array, size);
+                    break;
+                case linear_search_t:
+                    linear_search(array, size, v);
+                    break;
+                case binary_search_t:
+                    binary_search(array, size, v);
+                    break;
+                default:
+                    break;
+            }
+            clock_gettime(CLOCK_MONOTONIC, &end);
+            time_sum += end.tv_nsec - start.tv_nsec;
         }
-        time(&end);
-        buf[i].time = difftime(start, end);
+        buf[i].time = time_sum/AVERAGE_TEST_AMOUNT;
         buf[i].size = size;
 
         free(array);
