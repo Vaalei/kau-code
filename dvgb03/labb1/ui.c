@@ -77,7 +77,8 @@ void ui_run()
 {
 	bool running, show_menu;
 	result_t result[RESULT_ROWS];
-	
+	char choice;
+
 	show_menu = true;
 	running = true;
 	while (running) {
@@ -85,7 +86,9 @@ void ui_run()
 			show_menu = false;
 			ui_menu();
 		}
-		switch (ui_get_choice()) {
+		choice = ui_get_choice();
+		ui_star('*', MENU_WIDTH);
+		switch (choice) {
 			// House keeping
 			case 'a':
 				show_menu = true;
@@ -98,76 +101,91 @@ void ui_run()
 
 			// Bubble sort best case
 			case 'c':
+				printf("Bubble sort: best case\n");
 				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Bubble sort worst case
 			case 'd':
+				printf("Bubble sort: Worst Case\n");
 				benchmark(bubble_sort_t, worst_t, result, RESULT_ROWS);
 				break;
 				
 			// Bubble sort average case\n
 			case 'e':
+				printf("Bubble Sort: Average Case\n");
 				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Insertion sort best case
 			case 'f':
+				printf("Insertion Sort: Best Case\n");
 				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Insertion sort worst case
 			case 'g':
+				printf("Insertion Sort: Worst Case\n");
 				benchmark(insertion_sort_t, worst_t, result, RESULT_ROWS);
 				break;
 
 			// Insertion sort average case\n
 			case 'h':
+				printf("Insertion Sort: Average Case\n");
 				benchmark(insertion_sort_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Quick sort best case
 			case 'i':
+				printf("Quick sort: Best Case\n");
 				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Quick sort worst case
 			case 'j':
+				printf("Quick sort: Worst case\n");
 				benchmark(quick_sort_t, worst_t, result, RESULT_ROWS);
 				break;
 
 			// Quick sort average case\n
 			case 'k':
+				printf("Quick sort: Average case\n");
 				benchmark(quick_sort_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Linear search best case
 			case 'l':
+				printf("Linear search: Best case\n");
 				benchmark(linear_search_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Linear search worst case
 			case 'm':
+				printf("Linear search: worst case\n");
 				benchmark(linear_search_t, worst_t, result, RESULT_ROWS);
 				break;
 
 			// Linear search average case\n
 			case 'n':
+				printf("Linear search: Average case\n");
 				benchmark(linear_search_t, average_t, result, RESULT_ROWS);
 				break;
 
 			// Binary search best case
 			case 'o':
+				printf("Binary search: Best case\n");
 				benchmark(binary_search_t, best_t, result, RESULT_ROWS);
 				break;
 
 			// Binary search worst case
 			case 'p':
+				printf("Binary search: Worst case\n");
 				benchmark(binary_search_t, worst_t, result, RESULT_ROWS);
 				break;
 
 			// Binary search average cas
 			case 'q':
+				printf("Binary search: Average case\n");
 				benchmark(binary_search_t, average_t, result, RESULT_ROWS);
 				break;
 
@@ -177,6 +195,10 @@ void ui_run()
 				ui_invalid_input();
 				break;
 		}
+
+		ui_squiggly('~', MENU_WIDTH);
+		printf("\n");
+
 	}
 	ui_exit();
 }
