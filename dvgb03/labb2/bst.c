@@ -34,7 +34,44 @@ BST bst_add(BST T, int v)
 //-----------------------------------------------------------------------------
 BST bst_rem(BST T, int val)
 {
-	// TODO
+	if (T == NULL)
+		return T;
+	
+	if (get_val(T) > val)
+		set_LC(T, bst_rem(get_LC(T), val));  // Update left child pointer
+	else if (get_val(T) < val)
+		set_RC(T, bst_rem(get_RC(T), val));  // Update right child pointer
+	else {
+		// If tree only has right child
+		if(get_LC(T) == NULL)
+		{
+			BST temp = get_RC(T);
+			free(T);
+			return temp;
+		}
+		// If tree only has left child
+		if(get_RC(T) == NULL)
+		{
+			BST temp = get_LC(T);
+			free(T);
+			return temp;
+		}
+		// if tree has 2 childs
+		int bal = get_balance(T);
+		if (bal < 0)
+		{
+			BST successor = get_min_value_node(get_RC(T));
+			set_val(T, get_val(successor));
+			set_RC(T, bst_rem(get_RC(T), get_val(successor)));
+		}
+		else
+		{
+			BST successor = get_max_value_node(get_LC(T));
+			set_val(T, get_val(successor));
+			set_LC(T, bst_rem(get_LC(T), get_val(successor)));
+		}
+		
+	}
 	return T;
 }
 //-----------------------------------------------------------------------------
