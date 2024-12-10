@@ -8,6 +8,7 @@
 // local function prototypes
 //-----------------------------------------------------------------------------
 static void _preorder(BST T, int* pos, int* a);
+static int _max(int a, int b);
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
 //-----------------------------------------------------------------------------
@@ -93,7 +94,8 @@ bool is_member(BST T, int val)
 //-----------------------------------------------------------------------------
 int height(BST T)
 {
-	// TODO
+	if(T)
+		return _max(height(get_LC(T)) + 1,height(get_RC(T)) + 1);
 	return 0;
 }
 //-----------------------------------------------------------------------------
@@ -101,7 +103,8 @@ int height(BST T)
 //-----------------------------------------------------------------------------
 int size(BST T)
 {
-	// TODO
+	if (T)
+		return 1 + size(get_LC(T)) + size(get_RC(T));
 	return 0;
 }
 //-----------------------------------------------------------------------------
@@ -115,4 +118,9 @@ static void _preorder(BST T, int* pos, int* a)
 		_preorder(get_LC(T), pos, a);
 		_preorder(get_RC(T), pos, a);
 	}
+}
+
+static int _max(int a, int b)
+{
+	return (a > b) ? a : b;
 }
