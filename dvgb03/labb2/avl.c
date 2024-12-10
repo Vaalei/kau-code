@@ -28,7 +28,10 @@ AVL avl_add(AVL T, int val)
 AVL avl_rem(AVL T, int val)
 {
 	if(DEBUG)printf("avl_rem (%d)\n",val);
-	// TODO
+	
+	T = bst_rem(T, val);
+	T = balance(T);
+	
 	return T;
 }
 //-----------------------------------------------------------------------------
@@ -45,24 +48,40 @@ AVL balance(AVL T)
 static AVL srr(AVL T)
 {
 	if(DEBUG)printf("srr\n");
-	// TODO
+
+	BT* x = get_LC(T);
+	BT* y = get_RC(x);
+
+	set_RC(x, T);
+	set_LC(T, y);
+
 	return T;
 }
 static AVL slr(AVL T)
 {
 	if(DEBUG)printf("slr\n");
-	// TODO
+
+	BT* x = get_RC(T);
+	BT* y = get_LC(x);
+
+	set_LC(T, x);
+	set_RC(y, T);
+
 	return T;
 }
 static AVL drr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
-	// TODO
+
+	AVL leftChild = get_LC(T);
+    set_LC(T, slr(leftChild));
 	return T;
 }
 static AVL dlr(AVL T)
 {
 	if(DEBUG)printf("drr\n");
-	// TODO
+	
+	AVL rightChild = get_RC(T);
+    set_RC(T, srr(rightChild));
 	return T;
 }
