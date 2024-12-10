@@ -86,8 +86,15 @@ void bfs(BST T, int* a, int max)
 //-----------------------------------------------------------------------------
 bool is_member(BST T, int val)
 {
-	// TODO
-	return 	false;
+	if (T)
+	{
+		if (get_val(T) == val)
+			return true;
+		if (val > get_val(T))
+			return is_member(get_RC(T), val);
+		return is_member(get_LC(T), val);
+	}
+	return false;
 }
 //-----------------------------------------------------------------------------
 // height: returns height of BST T
