@@ -42,9 +42,38 @@ void print_array(int* a, int size)
 //-----------------------------------------------------------------------------
 void print_2d(int* a, int maxnodes)
 {
-	printf("\nTree 2d\n");
-	// TODO
-	printf("\n");
+    int height = 0;
+    int node = 0;
+
+    while ((1 * pow(2,height)) - 1 < maxnodes){
+        height++;
+    }  
+
+    for (int i = 0; i < height; i++) 
+    {
+        int level = (1 * pow(2,i));       
+        int space = (1 *pow(2,(height - i))) - 1;   
+        int innerspace = (1 * pow(2,(height - i + 1))) - 1; 
+
+        for (int j = 0; j < space; j++){
+            printf(" ");
+
+        }
+        for (int j = 0; j < level && node < maxnodes; j++)
+        {
+            if (a[node] == X)
+                printf("*");
+            else
+                printf("%d", a[node]);
+
+            node++;
+            
+            if (j < level - 1)
+                for (int k = 0; k < innerspace; k++) printf(" ");
+        }
+
+        printf("\n");
+    }
 }
 //-----------------------------------------------------------------------------
 // prints the menu
