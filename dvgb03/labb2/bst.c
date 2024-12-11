@@ -10,6 +10,7 @@
 static void _preorder(BST T, int* pos, int* a);
 static void _inorder(BST T, int* pos, int* a);
 static void _postorder(BST T, int* pos, int* a);
+static void _bfs(BST T, int* pos, int* a, int max);
 static int _max(int a, int b);
 static int get_balance(BST T) __attribute__((unused));
 static BST get_min_value_node(BST T) __attribute__((unused));
@@ -123,7 +124,8 @@ void postorder(BST T, int* a)
 //-----------------------------------------------------------------------------
 void bfs(BST T, int* a, int max)
 {
-	// TODO
+	int pos = 0;
+	_bfs(T, &pos, a, max);
 }
 //-----------------------------------------------------------------------------
 // is_member: checks if value val is member of BST T
@@ -188,6 +190,30 @@ static void _postorder(BST T, int* pos, int* a)
 		_postorder(get_LC(T), pos, a);
 		_postorder(get_RC(T), pos, a);
 		a[(*pos)++] = get_val(T);
+	}
+}
+
+static void _bfs(BST T, int* pos, int* a, int max)
+{
+	if (T == NULL)
+		return;
+	BST queue[max];
+	BST current;
+	int head = 0;
+	int i = 0;
+	queue[i++] = T;
+
+	while (head < max)
+	{
+		current = queue[head];
+		
+		if (i < max) queue[i++] = get_LC(current);
+		if (i < max) queue[i++] = get_RC(current);
+		if (current)
+			a[(*pos)++] = get_val(current);
+		else
+			a[(*pos)++] = X;
+		head++;
 	}
 }
 
