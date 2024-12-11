@@ -11,6 +11,9 @@ static void _preorder(BST T, int* pos, int* a);
 static void _inorder(BST T, int* pos, int* a);
 static void _postorder(BST T, int* pos, int* a);
 static int _max(int a, int b);
+static int get_balance(BST T) __attribute__((unused));
+static BST get_min_value_node(BST T) __attribute__((unused));
+static BST get_max_value_node(BST T) __attribute__((unused));
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
 //-----------------------------------------------------------------------------
@@ -191,4 +194,26 @@ static void _postorder(BST T, int* pos, int* a)
 static int _max(int a, int b)
 {
 	return (a > b) ? a : b;
+}
+
+// If return value >0 the tree is left heavy, If return value <0 the tree is right heavy
+static int get_balance(BST T)
+{
+	return height(get_LC(T)) - height(get_RC(T));
+}
+
+static BST get_min_value_node(BST T)
+{
+	BST current = T;
+	while (get_LC(current) != NULL)
+		current = get_LC(current);
+	return current;
+}
+
+static BST get_max_value_node(BST T)
+{
+	BST current = T;
+	while (get_RC(current) != NULL)
+		current = get_RC(current);
+	return current;
 }
