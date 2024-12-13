@@ -13,7 +13,11 @@ void print_tree(BST T)
 	if(!T)
 		printf("\nTree is empty\n\n\n");
 	else
+	{
+		printf("\nTree 2d\n");
 		print_2d(arr, max_n-1);
+		printf("\n");
+	}
 	printf("Size:\t\t%d\n", size(T));
 	printf("Height:\t\t%d\n", height(T));
 	printf("Preorder:\t");	preorder(T,arr);		print_array(arr,size(T));
