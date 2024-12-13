@@ -147,9 +147,8 @@ bool is_member(BST T, int val)
 //-----------------------------------------------------------------------------
 int height(BST T)
 {
-	if(T)
-		return _max(height(get_LC(T)) + 1,height(get_RC(T)) + 1);
-	return 0;
+	if(!T) return 0;
+	return _max(height(get_LC(T)) + 1,height(get_RC(T)) + 1);
 }
 //-----------------------------------------------------------------------------
 // size: returns size of BST T
