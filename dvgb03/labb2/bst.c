@@ -148,7 +148,7 @@ bool is_member(BST T, int val)
 int height(BST T)
 {
 	if(!T) return 0;
-	return _max(height(get_LC(T)) + 1,height(get_RC(T)) + 1);
+	return 1 + _max(height(get_LC(T)),height(get_RC(T)));
 }
 //-----------------------------------------------------------------------------
 // size: returns size of BST T
@@ -218,7 +218,7 @@ static void _bfs(BST T, int* pos, int* a, int max)
 
 static int _max(int a, int b)
 {
-	return (a > b) ? a : b;
+	return (a >= b) ? a : b;
 }
 
 // If return value >0 the tree is left heavy, If return value <0 the tree is right heavy
