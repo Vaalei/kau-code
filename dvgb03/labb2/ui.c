@@ -44,24 +44,31 @@ void print_array(int* a, int size)
 // prints a tree, represented by the BFS order star array a of size maxnodes
 // in a 2-dimensional way
 //-----------------------------------------------------------------------------
-  int width(int* a, int maxnodes){
+int _width(int* a, int maxnodes)
+{
     int max_width = 1; 
     int node; 
     int width = 0; 
 
-    for (int i = 0; i < maxnodes; i++){
-        if(a[i]!= X){ 
+    for (int i = 0; i < maxnodes; i++)
+	{
+        if(a[i]!= X)
+		{ 
             node = a[i]; 
-            while (node){ 
+            while (node)
+			{ 
                 width++; 
                 node /= 10; 
             }
-            if (width > max_width) { 
+
+            if (width > max_width) 
+			{ 
                 max_width = width;
             }
         }
-            return max_width;
+        return max_width;
     }
+	return 0;
 }
 
 void print_2d(int* a, int maxnodes) {
@@ -71,32 +78,36 @@ void print_2d(int* a, int maxnodes) {
 	int yttre;
 	int inre;
 
-    while (pow(2, height) - 1 < maxnodes) {
+    while (pow(2, height) - 1 < maxnodes)
+	{
         height++;
     }
 
-    int max_width = cal_width(a, maxnodes); 
+    int max_width = _width(a, maxnodes); 
     int print_width = max_width + 1; 
 
-    for (int i = 0; i < height; i++) {
+    for (int i = 0; i < height; i++) 
+	{
         position = pow(2, i);       
     	yttre = pow(2, (height - i)) - 1;   
         inre = pow(2, (height - i + 1)) - 1; 
 
-        for (int j = 0; j < yttre * print_width; j++) {
+        for (int j = 0; j < yttre * print_width; j++)
+		{
             printf(" ");
         }
 
         for (int j = 0; j < position && node < maxnodes; j++) {
-            if (a[node] == X) {
+            if (a[node] == X)
+			{
                 printf("%*s", print_width, "*"); 
             } else {
                 printf("%*d", print_width, a[node]); 
             }
-
             node++;
 
-            if (j < position - 1) {
+            if (j < position - 1)
+			{
                 for (int k = 0; k < inre * print_width; k++) printf(" ");
             }
         }
