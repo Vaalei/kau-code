@@ -125,7 +125,7 @@ void build_html_response(char* file_name, char* file_ext, char* response, size_t
     off_t file_size = file_stat.st_size;
 
     if (strcmp(file_name, "/") == 0) {
-        // Generate 301 Redireciting
+        // Generate 302 Redireciting
         snprintf(response, BUFFERSIZE, 
             "HTTP/1.1 302 Moved Temporarily\r\n"
             "Content-Type: text/plain\r\n"
