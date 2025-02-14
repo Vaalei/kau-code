@@ -15,8 +15,6 @@ int main(){
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
     server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    // maybe, såg på nätet, binder till en ip?
-    // inet_aton("63.161.169.137", &server_addr.sin_addr.s_addr);
 
     // Add SO_REUSEADDR to be able to reuse socket
     if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))) {
