@@ -10,18 +10,23 @@
 #define TIME_OFFSET 2208988800U // Difference between 1900 and 1970 in seconds
 #define BUFFER_S 1024
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s <port>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
     int port = atoi(argv[1]);
-    int sockfd;
+    int sock_fd;
     struct sockaddr_in server_addr, client_addr;
     socklen_t addr_len = sizeof(client_addr);
     char buffer[BUFFER_S];
     time_t current_time;
-    uint32_t currtime;
-    socklen_t addr_size;
 
     // Create UDP socket
-    if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
+    if ((sock_fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+    {
         perror("socket creation failed");
         exit(EXIT_FAILURE);
     }
@@ -33,15 +38,17 @@ int main(int argc, char **argv) {
     server_addr.sin_port = htons(port);
 
     // Bind the socket to the port
-    if (bind(sockfd, (const struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
+    if (bind(sock_fd, (const struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
+    {
         perror("bind failed");
-        close(sockfd);
+        close(sock_fd);
         exit(EXIT_FAILURE);
     }
 
-    while (1) {
+    while (1)
+    {
         // Receive request from client
-        recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&client_addr, &addr_len);
+        recvfrom(sock_fd, buffer, sizeof(buffer), 0, (struct sockaddr *)&client_addr, &addr_len);
 
         // Get current time
         current_time = time(NULL) + TIME_OFFSET;
@@ -50,10 +57,10 @@ int main(int argc, char **argv) {
         current_time = htonl(current_time);
 
         // Send time to client
-        sendto(sockfd, &current_time, sizeof(current_time), 0, (struct sockaddr *)&client_addr, addr_len);
-        printf("Data sent: %u\n", current_time);
+        sendto(sock_fd, &current_time, sizeof(current_time), 0, (struct sockaddr *)&client_addr, addr_len);
+        printf("Data sent: %ld\n", current_time);
     }
 
-    close(sockfd);
+    close(sock_fd);
     return 0;
 }
