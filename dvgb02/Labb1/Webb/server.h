@@ -15,6 +15,7 @@
 #define PORT 8080
 #define BUFFERSIZE 104857600
 #define STATIC_PATH "static"
+#define MAIN_SITE "index.html"
 #define NOT_AN_EXTENSION "NaMIME"
 
 void *handle_client(void *arg);

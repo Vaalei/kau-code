@@ -78,7 +78,8 @@ void *handle_client(void *arg) {
         strncpy(file_name, start + 4, end - start - 4);
 
         file_name[end - start - 4] = '\0';
-
+        printf(".%s.\n", file_name);
+        
         // Find file extention
         if ((dot = strstr(file_name, "."))) {
             file_ext = dot + 1;
@@ -123,8 +124,25 @@ void build_html_response(char* file_name, char* file_ext, char* response, size_t
     fstat(file_fd, &file_stat);
     off_t file_size = file_stat.st_size;
 
+    if (strcmp(file_name, "/") == 0) {
+        // Generate 301 Redireciting
+        snprintf(response, BUFFERSIZE, 
+            "HTTP/1.1 302 Moved Temporarily\r\n"
+            "Content-Type: text/plain\r\n"
+            "Location: /%s\r\n"
+            "Content-Length: 8\r\n"
+            "\r\n"
+            "Redirect",
+            MAIN_SITE
+        );
+        *response_len = strlen(response);
+        free(path);
+        free(header);
+        return;
+    }
+
     // file_fd = -1 if the file does not exist
-    if (file_fd == -1 || strcmp(file_name, "/") == 0) {
+    if (file_fd == -1) {
         // Generate 404 Not found header
         snprintf(response, BUFFERSIZE, 
             "HTTP/1.1 404 Not Found\r\n"
