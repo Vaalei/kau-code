@@ -128,6 +128,7 @@ void build_html_response(char* file_name, char* file_ext, char* response, size_t
         // Generate 302 Redireciting
         snprintf(response, BUFFERSIZE, 
             "HTTP/1.1 302 Moved Temporarily\r\n"
+            "Server: Demo Web Server\r\n"
             "Content-Type: text/plain\r\n"
             "Location: /%s\r\n"
             "Content-Length: 8\r\n"
@@ -146,6 +147,7 @@ void build_html_response(char* file_name, char* file_ext, char* response, size_t
         // Generate 404 Not found header
         snprintf(response, BUFFERSIZE, 
             "HTTP/1.1 404 Not Found\r\n"
+            "Server: Demo Web Server\r\n"
             "Content-Type: text/plain\r\n"
             "Content-Length: 13\r\n"
             "\r\n"
@@ -169,6 +171,7 @@ void build_html_response(char* file_name, char* file_ext, char* response, size_t
     // Create 200 ok header
     snprintf(header, BUFFERSIZE, 
         "HTTP/1.1 200 OK\r\n"
+        "Server: Demo Web Server\r\n"
         "Content-Type: %s\r\n"
         "Content-Length: %ld\r\n"
         "\r\n",
