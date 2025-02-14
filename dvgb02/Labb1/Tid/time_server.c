@@ -19,15 +19,15 @@ int main(int argc, char **argv)
     }
     int port = atoi(argv[1]);
     int sock_fd;
-    struct sockaddr_in server_addr, client_addr;
-    socklen_t addr_len = sizeof(client_addr);
+    struct sockaddr_in server_addr, client_adr;
+    socklen_t addr_len = sizeof(client_adr);
     char buffer[BUFFER_S];
     time_t current_time;
 
     // Create UDP socket
     if ((sock_fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
-        perror("socket creation failed");
+        perror("failed to create socket");
         exit(EXIT_FAILURE);
     }
 
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     // Bind the socket to the port
     if (bind(sock_fd, (const struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
     {
-        perror("bind failed");
+        perror("bind fail");
         close(sock_fd);
         exit(EXIT_FAILURE);
     }
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     while (1)
     {
         // Receive request from client
-        recvfrom(sock_fd, buffer, sizeof(buffer), 0, (struct sockaddr *)&client_addr, &addr_len);
+        recvfrom(sock_fd, buffer, sizeof(buffer), 0, (struct sockaddr *)&client_adr, &addr_len);
 
         // Get current time
         current_time = time(NULL) + TIME_OFFSET;
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
         current_time = htonl(current_time);
 
         // Send time to client
-        sendto(sock_fd, &current_time, sizeof(current_time), 0, (struct sockaddr *)&client_addr, addr_len);
+        sendto(sock_fd, &current_time, sizeof(current_time), 0, (struct sockaddr *)&client_adr, addr_len);
         printf("Data sent: %ld\n", current_time);
     }
 

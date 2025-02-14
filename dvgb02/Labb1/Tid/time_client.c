@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-    if (argc < 3)
+    if (argc != 3)
     {
         fprintf(stderr, "Usage: %s <server_ip>\n", argv[0]);
         exit(EXIT_FAILURE);
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     // Create UDP socket
     if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
     {
-        perror("socket creation failed");
+        perror("failed to create socket");
         exit(EXIT_FAILURE);
     }
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     server_addr.sin_port = htons(port);
     if (inet_pton(AF_INET, argv[1], &server_addr.sin_addr) <= 0)
     {
-        perror("invalid address");
+        perror("no address");
         close(sockfd);
         exit(EXIT_FAILURE);
     }

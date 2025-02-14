@@ -86,7 +86,6 @@ void *handle_client(void *arg)
         strncpy(file_name, start + 4, end - start - 4);
 
         file_name[end - start - 4] = '\0';
-        printf(".%s.\n", file_name);
 
         // Find file extention
         if ((dot = strstr(file_name, ".")))
