@@ -4,13 +4,14 @@
 #include <string.h>
 
 #define TIMEOUT 20.0
+#define DEBUG 0
 #define true 1
 #define false 0
 
 int waiting_for_ack = 0;
 
 struct pkt last_packet;
-static int seqNum = 0, ackNum = 0;
+static int seqNum = 0;
 int timer = 0;
 
 struct node {
@@ -24,9 +25,9 @@ struct node* tail = NULL;
 void print_linkedlist() {
 	struct node* current = head;
 	while (current != NULL) {
-		// printf("Packet: seqnum=%d, acknum=%d, checksum=%d, payload=%s\n",
-		//   	current->packet.seqnum, current->packet.acknum,
-		//   	current->packet.checksum, current->packet.payload);
+		if (DEBUG == 1) printf("Packet: seqnum=%d, acknum=%d, checksum=%d, payload=%s\n",
+		   	current->packet.seqnum, current->packet.acknum,
+		   	current->packet.checksum, current->packet.payload);
 		current = current->next;
 	}
 }
@@ -68,7 +69,7 @@ struct pkt* get_current_packet() {
 /* Called from layer 5, passed the data to be sent to other side */
 void A_output(struct msg message)
 {
-	// printf("A_output: Sending packet first time +++++++++++++++++++++++++++++++++++\n");
+	if (DEBUG == 1) printf("A_output: Sending packet first time +++++++++++++++++++++++++++++++++++\n");
     seqNum = !seqNum;
 	struct pkt packet;
 	packet.seqnum = seqNum;
@@ -93,22 +94,19 @@ void A_input(struct pkt packet)
 	stoptimer(A);
 	if (!verify_checksum(packet) || packet.acknum != last_packet.seqnum)
 	{
-		// printf("A_input: Packet corrupted or wrong acknum (%d, wanted %d), resending\n", packet.acknum, last_packet.seqnum);
+		if (DEBUG == 1) printf("A_input: Packet corrupted or wrong acknum (%d, wanted %d), resending\n", packet.acknum, last_packet.seqnum);
 	}
 	if (packet.acknum == last_packet.seqnum)
 	{
-		// printf("A_input: Ack received correctly\n");
-		// printf("+\n");
-		// printf("A_input: Sending next packet\n");
+		if (DEBUG == 1) printf("A_input: Ack received correctly\n");
 		get_next_packet();
 	}
 	else
 	{
-		// printf("A_input: Packet out of order, resending\n");
-		
+		if (DEBUG == 1) printf("A_input: Packet out of order, resending\n");
 	}
-	print_linkedlist();
 	if(head != NULL) {
+		if (DEBUG == 1) printf("A_input: Sending next packet\n");
 		send_packet(*get_current_packet());
 	}
 	
@@ -117,7 +115,7 @@ void A_input(struct pkt packet)
 /* Called when A's timer goes off */
 void A_timerinterrupt()
 {
-	// printf("A_timerinterrupt: Timeout, resending packet\n");
+	if (DEBUG == 1) printf("A_timerinterrupt: Timeout, resending packet\n");
 	if(get_current_packet() != NULL) 
 	{
 		send_packet(*get_current_packet());
@@ -134,7 +132,7 @@ void A_init()
 
 void send_packet(struct pkt packet)
 {
-	// printf("A_input: Sent packet\n");
+	if (DEBUG == 1) printf("A_input: Sent packet\n");
 	tolayer3(A, packet);
 	starttimer(A, TIMEOUT);
 	timer = 1;

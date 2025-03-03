@@ -3,6 +3,7 @@
 #include "lib.h"
 #include <string.h>
 #define TIMEOUT 20.0
+#define DEBUG 0
 #define true 1
 #define false 0
 
@@ -21,7 +22,7 @@ void B_input(struct pkt packet)
 {
 	if (!verify_checksum(packet))
 	{
-		// printf("B_input: Packet corrupted, sending back\n");
+		if (DEBUG == 1) printf("B_input: Packet corrupted, sending back\n");
 		packet.seqnum = expected_seqnum;
         packet.acknum = !expected_seqnum;
         packet.checksum = make_checksum(packet);
@@ -30,7 +31,7 @@ void B_input(struct pkt packet)
 	}
 	else if (packet.seqnum == expected_seqnum)
 	{
-		// printf("B_input: Packet received correctly\n");
+		if (DEBUG == 1) printf("B_input: Packet received correctly\n");
 		tolayer5(B, packet.payload);
 		
 		expected_seqnum = !expected_seqnum;
@@ -39,7 +40,7 @@ void B_input(struct pkt packet)
 	}
 	else
 	{
-		// printf("B_input: Packet out of order, sending back\n");
+		if (DEBUG == 1) printf("B_input: Packet out of order, sending back\n");
 		packet.seqnum = expected_seqnum;
         packet.acknum = !expected_seqnum;
         packet.checksum = make_checksum(packet);
@@ -50,7 +51,7 @@ void B_input(struct pkt packet)
 /* Called when B's timer goes off */
 void B_timerinterrupt()
 {
-	// printf("B_timerinterrupt: Timeout, resending packet\n");
+	if (DEBUG == 1) printf("B_timerinterrupt: Timeout, resending packet\n");
 	tolayer3(B, last_packet);
 }
 
