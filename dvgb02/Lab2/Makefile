@@ -1,7 +1,7 @@
 src = $(wildcard *.c)
 obj = $(src:.c=.o)
 
-CFLAGS = --std=c11 -g
+CFLAGS = --std=c11 -g -Wall
 
 sim: $(obj)
 	$(CC) $(CFLAGS) -o $@ $^
