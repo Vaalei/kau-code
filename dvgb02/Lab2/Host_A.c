@@ -84,6 +84,7 @@ void A_output(struct msg message)
 {
 	if (DEBUG == 1)
 		printf("A_output: Sending packet first time +++++++++++++++++++++++++++++++++++\n");
+
 	seqNum = !seqNum;
 	struct pkt packet;
 	packet.seqnum = seqNum;
