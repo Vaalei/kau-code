@@ -2,16 +2,16 @@
 
 int make_checksum(struct pkt packet)
 {
-	int sum = 0;
-	for (int i = 0; packet.payload[i] != '\0'; i++)
-		sum += packet.payload[i];
-	sum += packet.acknum;
-	sum += packet.seqnum;
-	return sum;
+    int sum = packet.acknum + packet.seqnum;
+    for (int i = 0; i < sizeof(packet.payload) && packet.payload[i] != '\0'; i++)
+    {
+        sum += packet.payload[i];
+    }
+    return sum;
 }
 
-/* Returns the checksum of a packet */
+/* Returns whether the checksum of a packet is correct */
 int verify_checksum(struct pkt packet)
 {
-	return make_checksum(packet) == packet.checksum;
+    return (make_checksum(packet) == packet.checksum);
 }

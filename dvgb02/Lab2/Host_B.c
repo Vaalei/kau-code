@@ -9,7 +9,7 @@
 
 int expected_seqnum = 1;
 
-struct pkt last_packet;
+struct pkt last_packet1;
 
 /* Called from layer 5, passed the data to be sent to other side */
 void B_output(struct msg message)
@@ -55,7 +55,7 @@ void B_timerinterrupt()
 {
 	if (DEBUG == 1)
 		printf("B_timerinterrupt: Timeout, resending packet\n");
-	tolayer3(B, last_packet);
+	tolayer3(B, last_packet1);
 }
 
 /* The following routine will be called once (only) before any other */
