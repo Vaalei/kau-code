@@ -214,3 +214,4 @@ cython_debug/
 #.idea/
 main
 tree
+.vscode/settings.json
